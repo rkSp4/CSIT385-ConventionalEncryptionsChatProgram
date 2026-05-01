@@ -156,6 +156,27 @@ function decrypt(text, cipher, key) {
   if (cipher === 'playfair')  return playfairDecrypt(text, key);
 }
 
+function validateKey() {
+  const cipher = getCipher();
+  const key = getKey();
+  const input = document.getElementById('keyInput');
+  const isNumberCipher = cipher === 'caesar' || cipher === 'railfence';
+  const isWordCipher = cipher === 'vigenere' || cipher === 'playfair';
+
+  if (isNumberCipher && isNaN(parseInt(key))) {
+    input.style.borderColor = '#ff4444';
+    showToast('⚠ Caesar & Rail Fence need a NUMBER key!');
+    return false;
+  }
+  if (isWordCipher && !/[a-zA-Z]/.test(key)) {
+    input.style.borderColor = '#ff4444';
+    showToast('⚠ Vigenère & Playfair need a WORD key!');
+    return false;
+  }
+  input.style.borderColor = '';
+  return true;
+}
+
 function updateBadge() {
   const c = document.getElementById('cipherSelect').value.toUpperCase();
   const k = getKey();
@@ -173,6 +194,7 @@ function sendMessage() {
   const input = document.getElementById('msgInput');
   const text = input.value.trim();
   if (!text) return;
+  if (!validateKey()) return;
   const cipher = getCipher(), key = getKey();
   const ciphertext = encrypt(text);
   addMessage({ type: 'sent', plain: text, cipher: ciphertext, cipherAlgo: cipher, cipherKey: key, time: now() });
@@ -184,6 +206,7 @@ function sendDecryptedMessage() {
   const input = document.getElementById('msgInput');
   const ciphertext = input.value.trim();
   if (!ciphertext) return;
+  if (!validateKey()) return;
   const cipher = getCipher(), key = getKey();
   const plaintext = decrypt(ciphertext, cipher, key);
   addMessage({ type: 'sent', plain: plaintext, cipher: ciphertext, cipherAlgo: cipher, cipherKey: key, time: now(), isDecrypted: true });
@@ -283,7 +306,10 @@ function now() {
 }
 
 // ── EVENT LISTENERS ──
-document.getElementById('cipherSelect').addEventListener('change', updateBadge);
+document.getElementById('cipherSelect').addEventListener('change', () => {
+  updateBadge();
+  validateKey();
+});
 document.getElementById('keyInput').addEventListener('input', updateBadge);
 
 document.getElementById('msgInput').addEventListener('input', function () {
