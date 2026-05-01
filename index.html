@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRYPT://CHAT - Conventional Encryption Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="logo">CRPYT<span>://</span>CHAT</div>
+    <div class="status-text">SECURE CHANNEL</div>
+    <div class="status-dot"></div>
+  </div>
+
+  <!-- ── CIPHER CONFIG BAR ── -->
+  <div class="config-bar">
+    <span class="config-label">Cipher:</span>
+    <select id="cipherSelect">
+      <option value="caesar">Caesar</option>
+      <option value="vigenere">Vigenère</option>
+      <option value="railfence">Rail Fence</option>
+      <option value="playfair">Playfair</option>
+    </select>
+    <span class="config-label">Key:</span>
+    <input type="text" id="keyInput" class="key-input" placeholder="3 or keyword" value="3">
+    <div class="cipher-badge" id="cipherBadge">CAESAR / KEY:3</div>
+  </div>
+
+  <!-- ── CHAT AREA ── -->
+  <div class="chat-area" id="chatArea">
+    <div class="empty-state" id="emptyState">
+      <div class="icon">🔐</div>
+      <p>No messages yet.<br>Type below and click ENCRYPT + SEND</p>
+    </div>
+  </div>
+
+  <!-- ── INPUT AREA ── -->
+  <div class="input-area">
+    <textarea class="msg-input" id="msgInput" placeholder="Type a message to encrypt..." rows="1"></textarea>
+    <button class="recv-btn" onclick="simulateReceive()">↙ SIM RECV</button>
+    <button class="send-btn" onclick="sendMessage()">ENCRYPT + SEND ▶</button>
+  </div>
+
+  <!-- ── TOAST NOTIFICATION ── -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
